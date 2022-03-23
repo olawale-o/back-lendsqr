@@ -11,8 +11,15 @@ module.exports = {
         last_name: lastName,
     }).then(id => db('user').where({ id }).first('id', 'email', 'first_name', 'last_name', 'balance'));
 
-    return {
-      user,
-    };
+    return user;
+  },
+
+  findUserBy: async (credentials) => {
+    const user = await db('user').where(credentials).first('id', 'email', 'first_name', 'last_name', 'balance', 'password');
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user;
   },
 };
