@@ -3,7 +3,7 @@ const UserModel = require('../models/user');
 
 module.exports = {
   createUser: async (credentials) => {
-    return await UserModel.createUser(credentials);
+    return UserModel.createUser(credentials);
   },
 
   authenticateUser: async (credentials) => {

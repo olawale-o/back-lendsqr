@@ -1,16 +1,14 @@
-const bcrypt = require('bcryptjs');
 const db = require('../database');
 
 module.exports = {
   createUser: async (credentials) => {
-    const { email: userEmail, password, firstName, lastName } = credentials;
+    const { email, password, firstName, lastName } = credentials;
     const user = await db('user').insert({
-        email: userEmail,
-        password: await bcrypt.hashSync(password, 10),
+        email,
+        password,
         first_name: firstName,
         last_name: lastName,
     }).then(id => db('user').where({ id }).first('id', 'email', 'first_name', 'last_name', 'balance'));
-
     return user;
   },
 
