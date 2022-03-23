@@ -1,4 +1,4 @@
-import { env } from './constants';
+const  env = require('./constants');
 const { PORT } = env;
 
 const http = require('http');
