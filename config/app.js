@@ -10,6 +10,8 @@ app.use(cookieParser());
 app.use(cors());
 
 
+app.use('/api/v1/users', require('../routes/users'));
+
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({
