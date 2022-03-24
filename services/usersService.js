@@ -25,6 +25,7 @@ module.exports = {
         first_name: user.first_name,
         last_name: user.last_name,
         balance: user.balance,
+        account_no: user.account_no,
       }
     } catch (error) {
       throw error;

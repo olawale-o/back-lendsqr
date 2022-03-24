@@ -1,10 +1,12 @@
 const bcrypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
+
 const usersService = require('../services/usersService');
 
 module.exports = {
   createUser: async (req, res) => {
     try {
-      const credentials = { ...req.body, password: bcrypt.hashSync(req.body.password, 10) };
+      const credentials = { ...req.body, password: bcrypt.hashSync(req.body.password, 10), accountNo: uuidv4() };
       const user = await usersService.createUser(credentials);
       res.status(201).json({ user });
     } catch (error) {
