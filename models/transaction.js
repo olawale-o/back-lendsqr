@@ -14,12 +14,7 @@ module.exports = {
       .where('account_no', '=', sender)
       .update({ balance: senderBalance })
       .then(function(ids) {
-        return trx('transaction').insert({
-          sender,
-          receiver,
-          amount,
-          description,
-        })
+        return trx('transaction').insert({ sender, receiver, amount, description, })
       }).catch(function(err) {
         console.log(err);
         return err;
