@@ -13,7 +13,7 @@ module.exports = {
     return user;
   },
 
-  findUserBy: async (credentials) => {
+  findBy: async (credentials) => {
     const user = await db('user').where(credentials).first('id', 'email', 'first_name', 'last_name', 'balance', 'password', 'account_no');
     if (!user) {
       throw new Error('User not found');
