@@ -4,6 +4,8 @@ const cors = require('cors');
 
 const app = express();
 
+require('../auth/passport');
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
