@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -10,14 +11,14 @@ passport.use('local-register', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: true,
-}, async (req, firstname, lastname, password, done) => {
+}, async (req, email, done) => {
   try {
     const user = await UserService.findBy({ email });
     if (user) {
       return done(null, false, { message: 'Please provide valid credentials' });
     }
-    const { email } = req.body;
-    const newUser = await UserService.create({ firstname, lastname, password, email, });
+    const credentials = { ...req.body, password: bcrypt.hashSync(req.body.password, 10), accountNo: uuidv4() };
+    const newUser = await UserService.create(credentials);
     return done(null, newUser, { message: 'User created successfully',});
   } catch (err) {
     return done(null, false, { message: err.message, });

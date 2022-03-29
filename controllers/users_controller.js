@@ -1,19 +1,40 @@
-const bcrypt = require('bcryptjs');
-const { v4: uuidv4 } = require('uuid');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const { env: { JWT_SECRET } } = require('../constants');
-const usersService = require('../services/usersService');
 
 module.exports = {
-  createUser: async (req, res) => {
-    try {
-      const credentials = { ...req.body, password: bcrypt.hashSync(req.body.password, 10), accountNo: uuidv4() };
-      const user = await usersService.create(credentials);
-      res.status(201).json({ user });
-    } catch (error) {
-      res.status(401).json({ error });
-    }
+  createUser: async (req, res, next) => {
+    passport.authenticate('local-register', { session: false }, async (err, user, info) => {
+      try {
+        if (err || !user) {
+          const error = new Error(info);
+          if(err) {
+            res.status(500).json(info)
+          }
+          if(!user) {
+            res.status(403).json(info);
+          }
+          return next(error);
+        } else {
+            const body = {
+              id: user.id,
+              email: user.email,
+              fullname: user.first_name,
+              phoneNo: user.last_name,
+              created_at: user.created_at,
+              updated_at: user.updated_at
+            };
+            const token = jwt.sign({user: user,},JWT_SECRET);
+            res.status(201).json({
+              user: body,
+              token: token,
+              message: "registered successfully",
+            });
+        }
+      } catch (error) {
+        return next(error);
+      }
+    })(req, res, next);
   },
 
   authenticateUser: async (req, res, next) => {
