@@ -53,12 +53,11 @@ module.exports = {
             firstname: user.first_name,
             lastname: user.last_name,
             email: user.email,
-          }, JWT_SECRET, { expiresIn: '1h',});
+          }, JWT_SECRET, { expiresIn: '1h' });
           res.status(200).json({ user, token, message: 'User loggedin successfully',});
         });
       } catch (error) {
         return next(error);
-        // res.status(401).json({ error: error.message });
       }
     })(req, res, next);
   },
