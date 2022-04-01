@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const UserModel = require('../models/user');
 
 module.exports = {
@@ -8,5 +7,9 @@ module.exports = {
 
   findBy: async (credentials) => {
     return await UserModel.findBy(credentials);
+  },
+
+  updateBalance: async (filter, credentials) => {
+    return await UserModel.updateBalance(filter, credentials);
   },
 };

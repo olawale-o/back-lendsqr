@@ -1,6 +1,7 @@
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const { env: { JWT_SECRET } } = require('../constants');
+const UserService = require('../services/usersService');
 
 module.exports = {
   createUser: async (req, res, next) => {
@@ -60,5 +61,16 @@ module.exports = {
         // res.status(401).json({ error: error.message });
       }
     })(req, res, next);
+  },
+
+  deposit: async (req, res, next) => {
+    try {
+      const { amount } = req.body;
+      const { id } = req.params;
+      const user = await UserService.updateBalance({ id }, { balance: amount });
+      res.status(200).json({ message: 'Deposit successful', user, });
+    } catch (error) {
+      return next(error);
+    }
   },
 };
