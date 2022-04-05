@@ -54,7 +54,22 @@ module.exports = {
             lastname: user.last_name,
             email: user.email,
           }, JWT_SECRET, { expiresIn: '1h' });
-          res.status(200).json({ user, token, message: 'User loggedin successfully',});
+          const transactions = await UserService.myTransactions(user.account_no);
+          res.status(200).json({
+            user: {
+              id: user.id,
+              email: user.email,
+              account_no: user.account_no,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              created_at: user.created_at,
+              updated_at: user.updated_at,
+              balance: user.balance,
+              transactions,
+            },
+            token,
+            message: 'User loggedin successfully',
+          });
         });
       } catch (error) {
         return next(error);

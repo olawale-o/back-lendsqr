@@ -12,4 +12,8 @@ module.exports = {
   updateBalance: async (filter, credentials) => {
     return await UserModel.updateBalance(filter, credentials);
   },
+
+  myTransactions: async (account_no) => {
+    return await UserModel.myTransactions(account_no);
+  }
 };
