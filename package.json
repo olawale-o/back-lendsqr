@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --recursive",
     "server": "nodemon server.js",
-    "migrate": "npx knex migrate:latest --knexfile database/knexfile.js"
+    "migrate:dev": "npx knex migrate:latest --knexfile database/knexfile.js --env development",
+    "migrate:test": "npx knex migrate:latest --knexfile database/knexfile.js --env test",
+    "seed:test": "npx knex seed:run --knexfile database/knexfile.js --env test"
   },
   "keywords": [],
   "author": "",
