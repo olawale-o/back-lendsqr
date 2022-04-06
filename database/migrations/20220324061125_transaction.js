@@ -5,8 +5,8 @@
 exports.up = function(knex) {
   return knex.schema.createTable('transaction', (table) => {
     table.increments('id').primary();
-    table.string('sender').references('account_no').inTable('user');
-    table.string('receiver').references('account_no').inTable('user');
+    table.string('sender').references('account_no').inTable('user').onDelete('CASCADE');
+    table.string('receiver').references('account_no').inTable('user').onDelete('CASCADE');
     table.string('description').nullable();
     table.decimal('amount').notNullable();
     table.timestamps(true, true);
