@@ -18,7 +18,30 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations'
-    }
+    },
+    seeds: {
+      directory: './seeds',
+    },
+  },
+
+  test: {
+    client: 'mysql2',
+    connection: {
+      database: 'lendsqr_test',
+      user:     'root',
+      password: ''
+    },
+    useNullAsDefault: true,
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'knex_migrations'
+    },
+    seeds: {
+      directory: './seeds',
+    },
   },
 
   staging: {
