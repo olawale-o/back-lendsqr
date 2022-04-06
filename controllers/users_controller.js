@@ -10,10 +10,10 @@ module.exports = {
         if (err || !user) {
           const error = new Error(info);
           if(err) {
-            res.status(500).json(info)
+            return res.status(500).json(info)
           }
           if(!user) {
-            res.status(403).json(info);
+            return res.status(403).json(info);
           }
           return next(error);
         } else {
@@ -21,12 +21,11 @@ module.exports = {
               id: user.id,
               email: user.email,
               fullname: user.first_name,
-              phoneNo: user.last_name,
               created_at: user.created_at,
               updated_at: user.updated_at
             };
             const token = jwt.sign({user: user,},JWT_SECRET);
-            res.status(201).json({
+            return res.status(201).json({
               user: body,
               token: token,
               message: "registered successfully",
@@ -43,8 +42,12 @@ module.exports = {
       try {
         if (err || !user) {
           const error = new Error(info.message);
-          res.status(401).json(info);
-          return next(error);
+          if (err) { 
+            return next(error);
+          }
+          if (!user) {
+            return res.status(401).json(info);
+          }
         }
         req.login(user, {session: false}, async (err) => {
           if (err) return next(err);
@@ -55,7 +58,7 @@ module.exports = {
             email: user.email,
           }, JWT_SECRET, { expiresIn: '1h' });
           const transactions = await UserService.myTransactions(user.account_no);
-          res.status(200).json({
+          return res.status(200).json({
             user: {
               id: user.id,
               email: user.email,
@@ -72,7 +75,7 @@ module.exports = {
           });
         });
       } catch (error) {
-        return next(error);
+        next(error);
       }
     })(req, res, next);
   },
