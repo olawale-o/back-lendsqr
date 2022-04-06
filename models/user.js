@@ -25,7 +25,7 @@ module.exports = {
     const transactions = await db('transaction')
     .join('user', 'user.account_no', '=', 'transaction.receiver')
     .where({ sender: account_no })
-    .select('user.first_name', 'user.last_name', 'transaction.amount', 'transaction.created_at')
+    .select('user.first_name', 'user.last_name', 'transaction.id', 'transaction.amount', 'transaction.created_at')
     .orderBy('transaction.created_at', 'desc')
     .limit(limit);
     return transactions;
