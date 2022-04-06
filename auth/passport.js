@@ -11,13 +11,13 @@ passport.use('local-register', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: true,
-}, async (req, email, done) => {
+}, async (req, email, password, done) => {
   try {
     const user = await UserService.findBy({ email });
     if (user) {
       return done(null, false, { message: 'Please provide valid credentials' });
     }
-    const credentials = { ...req.body, password: bcrypt.hashSync(req.body.password, 10), accountNo: uuidv4() };
+    const credentials = { ...req.body, password: bcrypt.hashSync(password, 10), accountNo: uuidv4() };
     const newUser = await UserService.create(credentials);
     return done(null, newUser, { message: 'User created successfully',});
   } catch (err) {
