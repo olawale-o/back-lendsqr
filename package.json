@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive",
+    "test": "mocha --recursive --timeout 10000",
     "server": "nodemon server.js",
     "migrate:dev": "npx knex migrate:latest --knexfile database/knexfile.js --env development",
     "migrate:test": "npx knex migrate:latest --knexfile database/knexfile.js --env test",
