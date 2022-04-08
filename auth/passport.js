@@ -47,9 +47,9 @@ passport.use('local-login', new LocalStrategy({
 passport.use(new JwtStrategy({
   secretOrKey: JWT_SECRET,
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken("JWT"),
-}, async (token, done) => {
+}, async (payload, done) => {
   try {
-    return done(null, token);
+    return done(null, payload);
   } catch (error) {
     return done(error);
   }
