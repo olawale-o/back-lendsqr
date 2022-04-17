@@ -1,6 +1,7 @@
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
-const { env: { JWT_SECRET } } = require('../constants');
+// const jwt = require('jsonwebtoken');
+// const { env: { JWT_SECRET } } = require('../constants');
+const tokenService = require('../services/tokenService');
 const UserService = require('../services/usersService');
 
 module.exports = {
@@ -24,7 +25,7 @@ module.exports = {
               created_at: user.created_at,
               updated_at: user.updated_at
             };
-            const token = jwt.sign({user: user,},JWT_SECRET);
+            const token = tokenService.sign({ body });
             return res.status(201).json({
               user: body,
               token: token,
@@ -51,12 +52,14 @@ module.exports = {
         }
         req.login(user, {session: false}, async (err) => {
           if (err) return next(err);
-          const token = jwt.sign({
-            userId: user.id,
-            firstname: user.first_name,
-            lastname: user.last_name,
+          const body = {
+            id: user.id,
             email: user.email,
-          }, JWT_SECRET, { expiresIn: '1h' });
+            fullname: user.first_name,
+            created_at: user.created_at,
+            updated_at: user.updated_at
+          };
+          const token = tokenService.sign({ body });
           const transactions = await UserService.myTransactions(user.account_no);
           return res.status(200).json({
             user: {
