@@ -5,7 +5,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 const UserService = require('../services/usersService');
-const { env: { JWT_SECRET } } = require('../constants');
+const { env: { ACCESS_SECRET } } = require('../constants');
+
 
 passport.use('local-register', new LocalStrategy({
   usernameField: 'email',
@@ -45,7 +46,7 @@ passport.use('local-login', new LocalStrategy({
 }));
 
 passport.use(new JwtStrategy({
-  secretOrKey: JWT_SECRET,
+  secretOrKey: ACCESS_SECRET,
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken("JWT"),
 }, async (payload, done) => {
   try {

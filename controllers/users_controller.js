@@ -1,6 +1,5 @@
 const passport = require('passport');
-// const jwt = require('jsonwebtoken');
-// const { env: { JWT_SECRET } } = require('../constants');
+const { env: { ACCESS_SECRET } } = require('../constants');
 const tokenService = require('../services/tokenService');
 const UserService = require('../services/usersService');
 
@@ -25,7 +24,7 @@ module.exports = {
               created_at: user.created_at,
               updated_at: user.updated_at
             };
-            const token = tokenService.sign({ body });
+            const token = tokenService.sign(body, ACCESS_SECRET);
             return res.status(201).json({
               user: body,
               token: token,
@@ -59,7 +58,7 @@ module.exports = {
             created_at: user.created_at,
             updated_at: user.updated_at
           };
-          const token = tokenService.sign({ body });
+          const token = tokenService.sign(body, ACCESS_SECRET);
           const transactions = await UserService.myTransactions(user.account_no);
           return res.status(200).json({
             user: {

@@ -1,8 +1,11 @@
 const jwt = require('jsonwebtoken');
-const { env: { JWT_SECRET } } = require('../constants');
 
 module.exports = {
-  sign: (credentials) => {
-    return jwt.sign(credentials, JWT_SECRET, { expiresIn: '60000' });
+  sign: (credentials, personalKey) => {
+    return jwt.sign(credentials, personalKey, { expiresIn: '60000' });
+  },
+
+  verify: (token, personalKey) => {
+    return jwt.verify(token, personalKey);
   },
 }
