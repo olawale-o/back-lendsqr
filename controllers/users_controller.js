@@ -59,7 +59,6 @@ module.exports = {
             updated_at: user.updated_at
           };
           const token = tokenService.sign(body, ACCESS_SECRET);
-          const transactions = await UserService.myTransactions(user.account_no);
           return res.status(200).json({
             user: {
               id: user.id,
@@ -70,7 +69,7 @@ module.exports = {
               created_at: user.created_at,
               updated_at: user.updated_at,
               balance: user.balance,
-              transactions,
+              transactions: user.transactions,
             },
             token,
             message: 'User loggedin successfully',
