@@ -1,19 +1,19 @@
-const UserModel = require('../models/user');
+const { userRepository } = require('../database');
 
 module.exports = {
   create: async (credentials) => {
-    return await UserModel.createUser(credentials);
+    return await userRepository.createUser(credentials);
   },
 
   findBy: async (credentials) => {
-    return await UserModel.findBy(credentials);
+    return await userRepository.findBy(credentials);
   },
 
   updateBalance: async (filter, credentials) => {
-    return await UserModel.updateBalance(filter, credentials);
+    return await userRepository.updateBalance(filter, credentials);
   },
 
   myTransactions: async (account_no) => {
-    return await UserModel.myTransactions(account_no);
+    return await userRepository.myTransactions(account_no);
   }
 };
