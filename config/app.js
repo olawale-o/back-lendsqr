@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const passport = require('passport');
+const errorHandler = require('../middleware/errorHandler');
 
 const app = express();
 
@@ -15,12 +16,6 @@ app.use(cors());
 app.use('/api/v1/users', require('../routes/users'));
 app.use('/api/v1/transactions', passport.authenticate('jwt', {session: false}), require('../routes/transactions'));
 
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({
-    message: err.message,
-    error: err
-  });
-});
+app.use(errorHandler);
 
 module.exports = app;
